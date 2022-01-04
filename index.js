@@ -1,10 +1,7 @@
-//ALSO CALLED SERVER.JS
-
-
 // DEPENDENCIES
 const express = require('express')
-const methodOverride = require('method-override')
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 // CONFIGURATION
 require('dotenv').config()
@@ -15,14 +12,8 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
     () => { console.log('connected to mongo: ', process.env.MONGO_URI) }
 )
 
-//MIDDLEWARE - points at views folder
-// app.use(express.urlencoded({ extended: true }))
-// app.use(express.static('public'))
-// app.set('views', __dirname + '/views');
-// app.set('view engine', 'jsx');
-// app.engine('jsx', require('express-react-views').createEngine());
-// app.use(methodOverride('_method'))
 app.use(express.json())
+app.use(cors())
 
 app.get('/', (req, res) => {
     res.send('Hello world!')
@@ -31,4 +22,6 @@ app.get('/', (req, res) => {
 const booksController = require('./controllers/books_controller.js')
 app.use('/books', booksController)
 
-app.listen(PORT)
+app.listen(PORT, function () {
+    console.log(`CORS-enabled web server listening on port ${PORT}`)
+})
